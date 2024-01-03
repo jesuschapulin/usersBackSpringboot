@@ -15,4 +15,7 @@ public interface UserDao {
    List<User> AccessByLogin(String login,String pass);
    int deleteUser(String login);
    int updateUser(User User);
+   
+   String getUsersADEAredis();
+   String getPapers();
 }

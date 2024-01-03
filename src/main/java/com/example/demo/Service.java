@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
@@ -51,7 +52,7 @@ public class Service {
 	public List<User> AccessByLogin(@PathVariable("login") String login,@PathVariable("secret") String secret){
 	   return userDao.AccessByLogin(login,secret);
 	}
-	@GetMapping("/setOneUserADEA/{login}/{secret}/{nombre}/{apaterno}/{amaterno}/{cliente}/{estado}/{dateRegs}")
+	@PostMapping("/setOneUserADEA/{login}/{secret}/{nombre}/{apaterno}/{amaterno}/{cliente}/{estado}/{dateRegs}")
 	public String setNewUser(@PathVariable("login") String login,@PathVariable("secret") String secret,
             @PathVariable("nombre") String nombre ,@PathVariable("apaterno") String apaterno,@PathVariable("amaterno") String amaterno,
             @PathVariable("cliente") String cliente,@PathVariable("estado") String estado,@PathVariable("dateRegs") String dateRegs){
@@ -86,7 +87,7 @@ public class Service {
 		}
 	   return res;
 	}
-	@GetMapping("/alterUserADEA/{login}/{nombre}/{cliente}/{apaterno}/{amaterno}/{estado}/{dateRegs}")
+	@PostMapping("/alterUserADEA/{login}/{nombre}/{cliente}/{apaterno}/{amaterno}/{estado}/{dateRegs}")
 	public String alterUserADEA(@PathVariable("login") String login,
             @PathVariable("nombre") String nombre,
             @PathVariable("cliente") String cliente,@PathVariable("apaterno") String apaterno,@PathVariable("amaterno") String amaterno,
@@ -121,7 +122,7 @@ public class Service {
 		}
 	   return res;
 	}
-	@GetMapping("/deleteUserADEA/{login}/{secret}")
+	@PostMapping("/deleteUserADEA/{login}/{secret}")
 	public String deleteUserADEA(@PathVariable("login") String login,@PathVariable("secret") String secret){
 
 		int state=0;
