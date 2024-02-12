@@ -68,12 +68,12 @@ public class UserDaoImpl implements UserDao{
               " '"+user.getNOMBRE()+"',\n" +
               " "+user.getCLIENTE()+",\n" +
               " '"+user.getNOMBRE()+"@"+user.getNOMBRE()+"',\n" +
-              " '"+user.getFECHAALTA()+"',\n" +
               " sysdate,\n" +
-              "'"+(user.getSTATUS().equals("A") ? 'A' : user.getSTATUS().equals("B") ? 'B' : user.getSTATUS().equals("R") ? 'R' : '0' )+"',\n" +
+              " '',\n" +
+              "'A',\n" +
               " 0,\n" +
-              " sysdate,\n" +
-              " sysdate,\n" +
+              " '',\n" +
+              " '"+user.getFECHA_VIGENCIA()+"',\n" +
               " 1,\n" +
               " '"+user.getAPELLIDO_PATERNO()+"',\n" +
               " '"+user.getAPELLIDO_MATERNO()+"',\n" +
@@ -115,12 +115,8 @@ public class UserDaoImpl implements UserDao{
               "NOMBRE='"+user.getNOMBRE()+"',\n" +
               "CLIENTE="+user.getCLIENTE()+",\n" +
               "EMAIL='"+user.getNOMBRE()+"@"+user.getNOMBRE()+"',\n" +
-              "FECHAALTA='"+user.getFECHAALTA()+"',\n" +
-              "FECHABAJA=sysdate,\n" +
               "STATUS='"+(user.getSTATUS().equals("A") ? 'A' : user.getSTATUS().equals("B") ? 'B' : user.getSTATUS().equals("R") ? 'R' : '0' )+"',\n" +
-              "INTENTOS=0,\n" +
-              "FECHAREVOCADO=sysdate,\n" +
-              "FECHA_VIGENCIA=sysdate,\n" +
+              "FECHA_VIGENCIA='"+user.getFECHA_VIGENCIA()+"',\n" +
               "NO_ACCESO=1,\n" +
               "APELLIDO_PATERNO='"+user.getAPELLIDO_PATERNO()+"',\n" +
               "APELLIDO_MATERNO='"+user.getAPELLIDO_MATERNO()+"',\n" +
@@ -138,11 +134,19 @@ public class UserDaoImpl implements UserDao{
 		return jdbcTemplate.update(sql);
    }
    @Override
+   public int inactiveUser(String login) {
+		System.out.println("login to inactive:::" + login);
+		String sql = "update usuariosadea set STATUS='B' where LOGIN='" + login + "'";
+		System.out.println("sql by inactive :::" + sql);
+		return jdbcTemplate.update(sql);
+   }
+   @Override
    public List<User> AccessByLogin(String login,String pass) {
-		System.out.println("login to access:::" + login);
+		System.out.println("login to access::: " + login);
 		String encodedUrl = Base64.getUrlEncoder().encodeToString(pass.getBytes());
 		System.out.println("contra :::" + encodedUrl);
-		String sql = "select * from usuariosadea where LOGIN='" + login + "' and PASSWORD='" + encodedUrl + "'";
+		String sql = "select * from usuariosadea where LOGIN='" + login + "' and PASSWORD='" + encodedUrl + "'"
+				+ " and fecha_vigencia >= sysdate and STATUS='A'";
 		System.out.println("sql by delete :::" + sql);
 		return jdbcTemplate.query(sql, new UserRowMapper());
    }

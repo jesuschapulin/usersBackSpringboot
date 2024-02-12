@@ -14,6 +14,7 @@ public interface UserDao {
    List<User> findByDate(String date1,String date2);
    List<User> AccessByLogin(String login,String pass);
    int deleteUser(String login);
+   int inactiveUser(String login);
    int updateUser(User User);
    
    String getUsersADEAredis();

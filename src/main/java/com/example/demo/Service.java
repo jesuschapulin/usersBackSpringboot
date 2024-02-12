@@ -52,10 +52,10 @@ public class Service {
 	public List<User> AccessByLogin(@PathVariable("login") String login,@PathVariable("secret") String secret){
 	   return userDao.AccessByLogin(login,secret);
 	}
-	@PostMapping("/setOneUserADEA/{login}/{secret}/{nombre}/{apaterno}/{amaterno}/{cliente}/{estado}/{dateRegs}")
+	@PostMapping("/setOneUserADEA/{login}/{secret}/{nombre}/{apaterno}/{amaterno}/{cliente}/{dateVigencia}")
 	public String setNewUser(@PathVariable("login") String login,@PathVariable("secret") String secret,
             @PathVariable("nombre") String nombre ,@PathVariable("apaterno") String apaterno,@PathVariable("amaterno") String amaterno,
-            @PathVariable("cliente") String cliente,@PathVariable("estado") String estado,@PathVariable("dateRegs") String dateRegs){
+            @PathVariable("cliente") String cliente,@PathVariable("dateVigencia") String dateVigencia){
 		User us=new User();
 		us.setLOGIN(login);
 		us.setNOMBRE(nombre);
@@ -63,8 +63,7 @@ public class Service {
 		us.setAPELLIDO_PATERNO(apaterno);
 		us.setAPELLIDO_MATERNO(amaterno);
 		us.setCLIENTE(Float.parseFloat(cliente));
-		us.setSTATUS(estado);
-		us.setFECHAALTA(dateRegs);
+		us.setFECHA_VIGENCIA(dateVigencia);
 		int state=0;
 		String res="";
 		try{
@@ -87,11 +86,11 @@ public class Service {
 		}
 	   return res;
 	}
-	@PostMapping("/alterUserADEA/{login}/{nombre}/{cliente}/{apaterno}/{amaterno}/{estado}/{dateRegs}")
+	@PostMapping("/alterUserADEA/{login}/{nombre}/{cliente}/{apaterno}/{amaterno}/{estado}/{dateVigencia}")
 	public String alterUserADEA(@PathVariable("login") String login,
             @PathVariable("nombre") String nombre,
             @PathVariable("cliente") String cliente,@PathVariable("apaterno") String apaterno,@PathVariable("amaterno") String amaterno,
-            @PathVariable("estado") String estado,@PathVariable("dateRegs") String dateRegs){
+            @PathVariable("estado") String estado,@PathVariable("dateVigencia") String dateVigencia){
 		User us=new User();
 		us.setLOGIN(login);
 		us.setNOMBRE(nombre);
@@ -99,7 +98,7 @@ public class Service {
 		us.setAPELLIDO_MATERNO(amaterno);
 		us.setCLIENTE(Float.parseFloat(cliente));
 		us.setSTATUS(estado);
-		us.setFECHAALTA(dateRegs);
+		us.setFECHA_VIGENCIA(dateVigencia);
 		int state=0;
 		String res="";
 		try{
@@ -134,6 +133,36 @@ public class Service {
             JSONObject item = new JSONObject();
             if(state==1) {
             	item.put("messaje","borrado");
+                item.put("error","xxxxx");
+            }else {
+            	item.put("messaje", "fallo");
+                item.put("error", "Error al borrar el usuario");
+            }
+            array.put(item);
+            res = array.toString();
+		}catch(Exception e) {
+			System.out.println("Fallo el borrado de base ::::::::: ");
+			JSONArray arraye = new JSONArray();
+			JSONObject iteme = new JSONObject();
+            iteme.put("messaje", "fallo");
+            iteme.put("error", "Error al borrar el usuario");
+            arraye.put(iteme);
+            res = arraye.toString();
+		}
+	   return res;
+	}
+	@PostMapping("/inactiveUserADEA/{login}/{nombre}")
+	public String inactiveUserADEA(@PathVariable("login") String login,@PathVariable("nombre") String nombre){
+
+		int state=0;
+		String res="";
+		try{
+			state=userDao.inactiveUser(login);
+			JSONArray array = new JSONArray();
+        	System.out.println("elemento de base inactivado ::::::::: "+state);
+            JSONObject item = new JSONObject();
+            if(state==1) {
+            	item.put("messaje","inactivado");
                 item.put("error","xxxxx");
             }else {
             	item.put("messaje", "fallo");
