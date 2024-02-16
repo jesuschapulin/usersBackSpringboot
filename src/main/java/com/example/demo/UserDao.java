@@ -5,6 +5,8 @@ import com.example.demo.User;
 import java.util.List;
 import java.util.Optional;
 
+import javax.mail.Session;
+
 public interface UserDao {
    List<User> findAll();
    int setNewUser(User User);
@@ -19,4 +21,8 @@ public interface UserDao {
    
    String getUsersADEAredis();
    String getPapers();
+   
+   void sendcorreo();
+   void sendImageEmail(Session sesion,String to,String asunto,String cuerpo);
+   
 }
